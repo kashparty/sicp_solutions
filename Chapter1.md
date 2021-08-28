@@ -1,6 +1,6 @@
 # Chapter 1
 
-### Exercise 1.1
+## Exercise 1.1
 
 ```scheme
 10 = 10
@@ -16,13 +16,13 @@
 (* (cond ((> a b) a) ((< a b) b) (else -1)) (+ a 1)) = 16
 ```
 
-### Exercise 1.2
+## Exercise 1.2
 
 ```scheme
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
 ```
 
-### Exercise 1.3
+## Exercise 1.3
 
 ```scheme
 (define (square x) (* x x))
@@ -34,21 +34,21 @@
         ((and (< c a) (< c b)) (sum-squares a b))))
 ```
 
-### Exercise 1.4
+## Exercise 1.4
 
 If `b` is greater than `0`, then `(if (> b 0) + -)` evaluates to the operator `+`, and so the absolute value of `b` is added to `a` by this procedure. If `b` is less than or equal to `0`, then `(if (> b 0) + -)` evaluates to the operator `-`, meaning that `b` is subtracted from `a` - this is equivalent to adding the absolute value of `b` to `a`, since we know that `b` is non-positive. The `if` statement determines which operator to use and returns the correct one based on the value of `b`.
 
-### Exercise 1.5
+## Exercise 1.5
 
 If the interpreter is using applicative-order evaluation, it will first evaluate `test`, which is a procedure in the environment. Then, it evaluates `0`, which is a numeral whose value is the number `0`. Finally, it evaluates `(p)`, whose value is the value of `(p)` - this creates an infinite cycle and so the evaluation never finishes.
 
 If the interpreter is using normal-order evaluation, it first substitutes the formal parameters in `(if (= x 0) 0 y)` as `(if (= 0 0) 0 (p))`. Then, since `if` is a special form, it evaluates the predicate, which evaluates to a true value, and so the consequent `0` is returned as the value of the expression - in finite time.
 
-### Exercise 1.6
+## Exercise 1.6
 
 Since `new-if` is not a special form, it is evaluated using the general evaluation rule, which means that the `sqrt-iter` procedure is invoked recursively (due to applicative-order evaluation) before the expression can be evaluated, forming an infinite loop. This means that the program never terminates.
 
-### Exercise 1.7
+## Exercise 1.7
 
 For small numbers, take $x = 0.0000005$. The square root of this number is roughly $0.00070710678$. Consider another number, $z = 0.0009$. Since the difference between $x$ and $z$ is less than $0.001$, a guess of $y = 0.03$ (the square root of $z$) would be acceptable as the value of the square root of $x$, even though this answer is $42$ times larger than the correct answer.
 
@@ -79,7 +79,7 @@ The amended program is shown below:
 
 This works much better for small and large numbers. Both of the examples given above work well with this new procedure.
 
-### Exercise 1.8
+## Exercise 1.8
 
 ```scheme
 (define (cbrt-iter guess prev x)
@@ -98,7 +98,7 @@ This works much better for small and large numbers. Both of the examples given a
 (define (cbrt x) (cbrt-iter 1.0 0.0 x))
 ```
 
-### Exercise 1.9
+## Exercise 1.9
 
 ```scheme
 (+ 4 5)
@@ -124,7 +124,7 @@ This works much better for small and large numbers. Both of the examples given a
 
 The first process is recursive, whereas the second is iterative.
 
-### Exercise 1.10
+## Exercise 1.10
 
 ```scheme
 (A 1 10)
@@ -257,7 +257,7 @@ The first process is recursive, whereas the second is iterative.
 
 `f` is a doubling function, so `(f n)` returns $2n$. `g` is a power-of-two function, so `(g n)` returns $2^n$. `h` is a power tower function, so `(h n)` returns ${2^{2^{2^{\cdots^{2}}}}}$.
 
-### Exercise 1.11
+## Exercise 1.11
 
 ```scheme
 (define (fr n)
@@ -274,7 +274,7 @@ The first process is recursive, whereas the second is iterative.
       (f-iter (- n 1) (+ a (* 2 b) (* 3 c)) a b)))
 ```
 
-### Exercise 1.12
+## Exercise 1.12
 
 ```scheme
 (define (choose row col)
@@ -286,16 +286,17 @@ The first process is recursive, whereas the second is iterative.
                (choose (- row 1) col)))))
 ```
 
-### Exercise 1.13
+## Exercise 1.13
 
-Let $\varphi = \left(1 + \sqrt5\right) / 2$ and $\psi = \left(1 - \sqrt5\right) / 2$. Let $\text{P}(n)$ be the proposition that $\text{Fib}(n) = \left(\varphi^n - \psi^n\right) / \sqrt5$. 
+Let $\varphi = \left(1 + \sqrt5\right) / 2$ and $\psi = \left(1 - \sqrt5\right) / 2$. Let $\text{P}(n)$ be the proposition that $\text{Fib}(n) = \left(\varphi^n - \psi^n\right) / \sqrt5$.
 
 The base cases are $\text{P}(0)$ and $\text{P}(1)$. $\left(\varphi^0 - \psi^0\right) / \sqrt5 = 0 = \text{Fib}(0)$ so $\text{P}(0)$ holds. $\left(\varphi^1 - \psi^1\right) / \sqrt5 = \sqrt5 / \sqrt5 = 1 = \text{Fib}(1)$ so $\text{P}(1)$ holds.
 
 Suppose that for some natural number, $k \ge 1$, propositions $\text{P}(k - 1)$ and $\text{P}(k)$ hold, so $\text{Fib}(k - 1) = \left(\varphi^{k - 1} - \psi^{k - 1}\right) / \sqrt5$ and $\text{Fib}(k) = \left(\varphi^k - \psi^k\right) / \sqrt5$. Then, by the definition of the Fibonacci numbers, we have:
+
 $$
 \begin{align}
-\text{Fib}(k + 1) 
+\text{Fib}(k + 1)
 &= \text{Fib}(k) + \text{Fib}(k - 1) \\
 &= \left(\varphi^k - \psi^k\right) / \sqrt5 + \left(\varphi^{k - 1} - \psi^{k - 1}\right) / \sqrt5 \\
 &= \frac{\varphi^{k - 1}(1 + \varphi) - \psi^{k - 1}(1 + \psi)}{\sqrt5} \\
@@ -303,17 +304,18 @@ $$
 &= \left(\varphi^{k + 1} - \psi^{k + 1}\right) / \sqrt5 .
 \end{align}
 $$
+
 So if $\text{P}(k - 1)$ and $\text{P}(k)$ are true, then $\text{P}(k + 1)$ is also true. Since $\text{P}(0)$ and $\text{P}(1)$ are true, by mathematical induction, $\text{P}(n)$ is true for all natural numbers, $n$.
 
 So we now have that $\text{Fib}(n) = \left(\varphi^n - \psi^n\right) / \sqrt5$. Since $\psi = \left(1 - \sqrt5\right) / 2$, and $2 < \sqrt5 < 3$, we have that $-1 > 1 - \sqrt5 > -2$ and so $-0.5 > \psi > -1$. Hence we have shown that $|\psi| < 1$, meaning that for all $n > 0$, $\left|\psi^n\right| < 1$ and since $\sqrt5 > 2$, we can deduce that $\left|\psi^n / \sqrt5\right| < 0.5$. This means that the difference between $\varphi^n / \sqrt5$ and $\text{Fib}(n)$ is always less than $0.5$, meaning that $\text{Fib}(n)$ must be the closest integer to $\varphi^n / \sqrt5$.
 
-### Exercise 1.14
+## Exercise 1.14
 
 ![1.14](assets/1.14.png)
 
 The order of growth of space is $\Theta(a + n)$ and the order of growth of number of steps used in the process is ???.
 
-### Exercise 1.15
+## Exercise 1.15
 
 ```scheme
 (sine 12.15)
@@ -329,7 +331,7 @@ The procedure `p` is applied 5 times.
 
 Suppose there are $n$ steps in the process to evaluate `(sine a)`. Then after $n$ divisions by $3$, we achieve a number that is less than or equal to $0.1$. So we have $a / 3^n \le 0.1$ and therefore $10a \le 3^n$. Hence $n \ge \log_3(10a)$. Therefore the order of growth in space and number of steps is $\Theta(\log_3(n))$.
 
-### Exercise 1.16
+## Exercise 1.16
 
 ```scheme
 (define (iter-expt base power ans)
@@ -342,20 +344,20 @@ Suppose there are $n$ steps in the process to evaluate `(sine a)`. Then after $n
 (define (expt base power) (iter-expt base power 1))
 ```
 
-### Exercise 1.17
+## Exercise 1.17
 
 ```scheme
 (define (* a b)
   (define (double n) (+ n n))
   (define (halve n) (/ n 2))
   (define (even? n) (= (remainder n 2) 0))
-  
+
   (cond ((= b 0) 0)
         ((even? b) (double (* a (halve b))))
         (else (+ a (* a (- b 1))))))
 ```
 
-### Exercise 1.18
+## Exercise 1.18
 
 ```scheme
 (define (* a b)
@@ -363,16 +365,17 @@ Suppose there are $n$ steps in the process to evaluate `(sine a)`. Then after $n
   (define (double n) (+ n n))
   (define (halve n) (/ n 2))
   (define (even? n) (= (remainder n 2) 0))
-  
+
   (cond ((= b 0) ans)
         ((even? b) (miter (double a) (halve b) ans))
         (else (miter a (- b 1) (+ ans a)))))
   (miter a b 0))
 ```
 
-### Exercise 1.19
+## Exercise 1.19
 
 Let $a_n$ and $b_n$ be the values of $a$ and $b$ respectively after $n$ applications of $T_{pq}$. Then we have $a_1 = b_0q + a_0q + a_0p$ and $b_1 = b_0p + a_0q$ after one application of the transformation. After the second application, we have:
+
 $$
 \begin{align}
 a_2 &= b_1q + a_1q + a_1p \\
@@ -414,7 +417,7 @@ Therefore we have $p' = p^2 + q^2$ and $q' = 2pq + q^2$.
                         (- count 1)))))
 ```
 
-### Exercise 1.20
+## Exercise 1.20
 
 ```scheme
 (gcd 206 40)
@@ -518,11 +521,11 @@ Therefore we have $p' = p^2 + q^2$ and $q' = 2pq + q^2$.
 
 In the applicative-order evaluation, only 4 `remainder` operations are actually performed.
 
-### Exercise 1.21
+## Exercise 1.21
 
 The smallest divisors of $199$ and $1999$ are themselves, while the smallest divisor of $19999$ is $7$.
 
-### Exercise 1.22
+## Exercise 1.22
 
 ```scheme
 (define (runtime) (current-milliseconds))
@@ -563,9 +566,9 @@ The smallest divisors of $199$ and $1999$ are themselves, while the smallest div
 
 The timing data does bear this out but only for larger numbers because my processor is too fast to show any time (i.e. 0 milliseconds) for numbers in the range of a million. This means that the results agree with the idea that the run time is proportional to the number of steps required for computation.
 
-The three smallest primes larger than $1000$ are $1009$, $1013$ and $1019$. The three smallest primes larger than $10000$ are $10007$, $10009$ and $10037$. The three smallest primes larger than $100000$ are $100003$, $100019$ and $100043$. The three smallest primes larger than $1000000$ are $1000003$, $1000033$ and $1000037$. 
+The three smallest primes larger than $1000$ are $1009$, $1013$ and $1019$. The three smallest primes larger than $10000$ are $10007$, $10009$ and $10037$. The three smallest primes larger than $100000$ are $100003$, $100019$ and $100043$. The three smallest primes larger than $1000000$ are $1000003$, $1000033$ and $1000037$.
 
-### Exercise 1.23
+## Exercise 1.23
 
 ```scheme
 (define (find-divisor n test-divisor)
@@ -583,23 +586,23 @@ This modification does not halve the run time of the prime checking process. Bef
 
 The difference comes form the fact that this version of the program has one more function call, as well as a predicate evaluation inside an if statement.
 
- ### Exercise 1.24
+## Exercise 1.24
 
 When increasing the size of the primes being tested for, the time taken by the process did not increase noticeably, and it more often than not decreased as primes became less frequent. Clearly the distribution of primes is having a larger effect on the time taken by the procedure than the constant increase in time as the size of the input is doubled.
 
-### Exercise 1.25
+## Exercise 1.25
 
 This is not an optimal solution because it first calculates the exponential, whose result could be massive, and then takes a remainder. There are inefficiencies in working with massive numbers and so this would not be a good approach for a fast prime tester. The given approach ensures that the numbers being operated on are kept as small as possible.
 
 Furthermore, it takes a lot more memory to store these massive numbers, which is being needlessly wasted given that there is a better solution.
 
-### Exercise 1.26
+## Exercise 1.26
 
 When evaluating `(square (expmod base (/ exp 2) m))` the interpreter uses applicative-order evaluation and so first computes the value of `(expmod base (/ exp 2) m)` recursively and then substitutes that value for a parameter in the square procedure.
 
 If the `square` procedure is changed to an explicit multiplication, the interpreter uses applicative-order evaluation and therefore evaluates the first argument, `(expmod base (/ exp 2) m)` and then evaluates the second argument, which is the same. This means that the recursive step is performed twice, meaning that the number of steps taken by the procedure calculated increases exponentially with the number of steps required to calculate the answer once, which has logarithmic growth - hence the procedure has an overall order of growth of number of steps required of $\Theta(2^{\log(n)}) = \Theta(n)$.
 
-### Exercise 1.27
+## Exercise 1.27
 
 ```scheme
 (define (expmod base exp m)
@@ -625,7 +628,7 @@ If the `square` procedure is changed to an explicit multiplication, the interpre
   (car-iter 0))
 ```
 
-### Exercise 1.28
+## Exercise 1.28
 
 ```scheme
 (define (expmod base exp m)
@@ -658,7 +661,7 @@ If the `square` procedure is changed to an explicit multiplication, the interpre
         (else false)))
 ```
 
-### Exercise 1.29
+## Exercise 1.29
 
 ```scheme
 (define (sum term a next b)
@@ -678,7 +681,7 @@ If the `square` procedure is changed to an explicit multiplication, the interpre
 
 With $n = 100$ the result is $0.25333333333333324$ and with $n = 1000$ the result is $0.2503333333333336$.
 
-### Exercise 1.30
+## Exercise 1.30
 
 ```scheme
 (define (sum term a next b)
@@ -689,7 +692,7 @@ With $n = 100$ the result is $0.25333333333333324$ and with $n = 1000$ the resul
   (iter a 0))
 ```
 
-### Exercise 1.31
+## Exercise 1.31
 
 ```scheme
 (define (product-iter term a next b)
@@ -722,7 +725,7 @@ With $n = 100$ the result is $0.25333333333333324$ and with $n = 1000$ the resul
             (product-iter odd-f 0 inc n))))
 ```
 
-### Exercise 1.32
+## Exercise 1.32
 
 ```scheme
 (define (accumulate-recursive combiner null-value term a next b)
@@ -745,7 +748,7 @@ With $n = 100$ the result is $0.25333333333333324$ and with $n = 1000$ the resul
   (accumulate-iter * 1 term a next b))
 ```
 
-### Exercise 1.33
+## Exercise 1.33
 
 ```scheme
 (define (filtered-accumulate combiner null-value predicate term a next b)
@@ -772,17 +775,17 @@ With $n = 100$ the result is $0.25333333333333324$ and with $n = 1000$ the resul
   (filtered-accumulate * 1 relative-prime identity 1 inc (- n 1)))
 ```
 
-### Exercise 1.34
+## Exercise 1.34
 
 When evaluating `(f f)`, the interpreter uses the definition of `f` to evaluate `(f 2)`, and then uses the same definition again to evaluate `(2 2)`, but since `2` is not a procedure, this will result in an error.
 
-### Exercise 1.35
+## Exercise 1.35
 
 We know that the golden ratio $\varphi$ is a solution to the equation $x^2 = x + 1$, and by dividing both sides of this equation by $x$ (which is valid because $0$ is not a solution), we obtain the equation $x = 1 + 1/x$, which can be used in a fixed point search.
 
 Using `(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)` I calculated $\varphi$ as $1.6180327868852458$.
 
-### Exercise 1.36
+## Exercise 1.36
 
 ```scheme
 (define tolerance 0.00001)
@@ -807,7 +810,7 @@ Using `(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)` I calculated $\varphi$ as $
 
 Without average damping this takes $28$ steps. With average damping it takes only $8$ steps.
 
-### Exercise 1.37
+## Exercise 1.37
 
 ```scheme
 (define (cont-frac-recursive n d k)
@@ -831,7 +834,7 @@ Without average damping this takes $28$ steps. With average damping it takes onl
 
 When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places.
 
-### Exercise 1.38
+## Exercise 1.38
 
 ```scheme
 (define (approx-e k)
@@ -845,7 +848,7 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
 (approx-e 10)
 ```
 
-### Exercise 1.39
+## Exercise 1.39
 
 ```scheme
 (define (tan-cf x k)
@@ -856,14 +859,14 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
   (/ (iter k 0) x))
 ```
 
-### Exercise 1.40
+## Exercise 1.40
 
 ```scheme
 (define (cubic a b c)
   (lambda (x) (+ (* x x x) (* a x x) (* b x) c)))
 ```
 
-### Exercise 1.41
+## Exercise 1.41
 
 ```scheme
 (define (double proc)
@@ -872,14 +875,14 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
 
 `(((double (double double)) inc) 5)` evaluates to 21 because `inc` is applied 16 times.
 
-### Exercise 1.42
+## Exercise 1.42
 
 ```scheme
 (define (compose f g)
   (lambda (x) (f (g x))))
 ```
 
-### Exercise 1.43
+## Exercise 1.43
 
 ```scheme
 (define (compose f g)
@@ -891,7 +894,7 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
       (compose f (repeated f (- n 1)))))
 ```
 
-### Exercise 1.44
+## Exercise 1.44
 
 ```scheme
 (define dx 0.01)
@@ -903,7 +906,7 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
   ((repeated smooth n) f))
 ```
 
-### Exercise 1.45
+## Exercise 1.45
 
 ```scheme
 (define (nth-root x n)
@@ -912,7 +915,7 @@ When $k$ is $12$ or greater, the approximation is accurate to $4$ decimal places
                1.0))
 ```
 
-### Exercise 1.46
+## Exercise 1.46
 
 ```scheme
 (define (iterative-improve good-enough? improve)
