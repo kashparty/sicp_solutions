@@ -1,6 +1,4 @@
-# SICP Answers
-
-## Chapter 1
+# Chapter 1
 
 ### Exercise 1.1
 
