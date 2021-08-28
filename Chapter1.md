@@ -309,7 +309,7 @@ So we now have that $\text{Fib}(n) = \left(\varphi^n - \psi^n\right) / \sqrt5$. 
 
 ### Exercise 1.14
 
-![image-20210824132947215](SICPAnswers/assets/image-20210824132947215.png)
+![1.14](assets/1.14.png)
 
 The order of growth of space is $\Theta(a + n)$ and the order of growth of number of steps used in the process is ???.
 
