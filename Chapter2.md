@@ -81,7 +81,7 @@
   (display ")"))
 ```
 
-### Exercise 2.3
+## Exercise 2.3
 
 ```scheme
 (define (square x) (* x x))
@@ -146,7 +146,7 @@
           (other-length rect))))
 ```
 
-### Exercise 2.4
+## Exercise 2.4
 
 ```scheme
 (car (cons x y))
@@ -163,7 +163,7 @@ So the corresponding definition of `cdr` is
   (z lambda (p q) q))
 ```
 
-### Exercise 2.5
+## Exercise 2.5
 
 ```scheme
 (define (square x) (* x x))
@@ -188,7 +188,7 @@ So the corresponding definition of `cdr` is
 (define (cdr pair) (num-divisions pair 3))
 ```
 
-### Exercise 2.6
+## Exercise 2.6
 
 Definition of one:
 
@@ -226,3 +226,156 @@ Definition of add:
 ```
 
 This expands `b` first and then expands `a` on the result of `b`'s expansion, and then wraps the result in the correct format.
+
+## Exercise 2.7
+
+```scheme
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+        (p2 (* (lower-bound x) (upper-bound y)))
+        (p3 (* (upper-bound x) (lower-bound y)))
+        (p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
+
+(define (div-interval x y)
+  (mul-interval
+   x
+   (make-interval (/ 1.0 (upper-bound y))
+                  (/ 1.0 (lower-bound y)))))
+
+(define (make-interval a b) (cons a b))
+(define (upper-bound x) (cdr x))
+(define (lower-bound x) (car x))
+```
+
+## Exercise 2.8
+
+The lower bound of the difference of two intervals is the difference between the lower bound of the first interval and the upper bound of the second interval. The upper bound of the difference of two intervals is the difference between the upper bound of the first interval and the lower bound of the second interval. This leads to the following definition for `sub-interval`:
+
+```scheme
+(define (sub-interval x y)
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
+```
+
+## Exercise 2.9
+
+Let $w$ be a function which maps an interval to its width.
+
+Suppose there are two intervals, $x = [a, b]$ and $y = [c, d]$. Then the width of the first interval, $x$, is $w(x) = (b - a) / 2$ and the width of the second interval, $y$, is $w(y) = (d - c) / 2$.
+
+When the intervals $x$ and $y$ are summed, the resulting interval is $z = [a + c, b + d]$. This means that the width of the resulting interval, $z$, is $w(z) = (b + d - a - c) / 2$, which can be written as $(b - a) / 2 + (d - c) / 2 = w(x) + w(y)$.
+
+When the intervals $x$ and $y$ are subtracted, the resulting interval is $z = [a - d, b - c]$. This means that the width of the resulting interval, $z$, is $w(z) = (b - c - a + d) / 2$, which can be written as $(b - a) / 2 + (d - c) / 2 = w(x) + w(y)$.
+
+Suppose $x = [2, 5]$ and $y = [-3, 7]$. We have $w(x) = 3/2$ and $w(y) = 5$ When these intervals are multiplied, the resulting interval is $z = [-15, 35]$, and we have $w(z) = 25$. Suppose instead that $x = [-15, -12]$, so $w(x)$ remains $3/2$. Then we have $z = [-105, 45]$, and so $w(z) = 75$. So for two pairs of intervals with the same widths, the width of the product can be different, and so in multiplication, the width of the resulting interval is not a function only of the widths of the intervals being multiplied.
+
+Since division is defined in terms of multiplication in this implementation, it is an obvious conclusion that, for division also, the width of the resulting interval is not a function only of the widths of the intervals being multiplied.
+
+## Exercise 2.10
+
+```scheme
+(define (div-interval x y)
+  (if (and (not (> (lower-bound y) 0))
+           (not (< (upper-bound y) 0)))
+      (error "Potential division by zero")
+      (mul-interval
+       x
+       (make-interval (/ 1.0 (upper-bound y))
+                      (/ 1.0 (lower-bound y))))))
+```
+
+## Exercise 2.11
+
+The nine cases are as follows. The only case requiring more than two multiplications is the third case.
+
+1. If all the endpoints are positive, the lower bound is the lower bounds of the two intervals multiplied together, and the upper bound is the upper bounds of the two intervals multiplied together.
+2. If all the endpoints are negative, the lower bound is the upper bounds of the two intervals multiplied together, and the upper bound is the lower bounds of the two intervals multiplied together.
+3. If both the lower endpoints are negative and both the upper endpoints are positive, then the lower bound is the smaller of the following two values: the upper bound of the first multiplied by the lower bound of the second and the lower bound of the first multiplied by the upper bound of the second. The upper bound is the larger of the following two values: the lower bounds multiplied together and the upper bounds multiplied together.
+4. If the lower bound of the first is negative and the rest of the endpoints are positive, then the lower bound is the lower bound of the first multiplied by the upper bound of the second, and the upper bound is the two upper bounds multiplied together.
+5. If the lower bound of the second is negative and the rest of the endpoints are positive, then the lower bound is the upper bound of the first multiplied by the lower bound of the second, and the upper bound is the two upper bounds multiplied together.
+6. If the upper bound of the first is positive and the rest of the endpoints are negative, then the lower bound is the upper bound of the first multiplied by the lower bound of the second and the upper bound is the two lower bounds multiplied together.
+7. If the upper bound of the second is positive and the rest of the endpoints are negative, then the lower bound is the lower bound of the first multiplied by the upper bound of the second and the upper bound is the two lower bounds multiplied together.
+8. If the endpoints of the first are both negative and the endpoints of the second are both positive, then the lower bound is the lower bound of the first multiplied by the upper bound of the second and the upper bound is the upper bound of the first multiplied by the lower bound of the second.
+9. If the endpoints of the first are both positive and the endpoints of the second are both negative, then the lower bound is the upper bound of the first multiplied by the lower bound of the second and the upper bound is the lower bound of the first multiplied by the upper bound of the second.
+
+Translating this into code:
+
+```scheme
+(define (>= a b) (not (< a b)))
+(define (<= a b) (not (> a b)))
+
+(define (mul-interval x y)
+  (cond ((and (>= (lower-bound x) 0)
+              (>= (lower-bound y) 0))
+         (make-interval (* (lower-bound x)
+                           (lower-bound y))
+                        (* (upper-bound x)
+                           (upper-bound y))))
+        ((and (<= (upper-bound x) 0)
+              (<= (upper-bound y) 0))
+         (make-interval (* (upper-bound x)
+                           (upper-bound y))
+                        (* (lower-bound x)
+                           (lower-bound y))))
+        ((and (<= (lower-bound x) 0)
+              (>= (upper-bound x) 0)
+              (<= (lower-bound y) 0)
+              (>= (upper-bound y) 0))
+         (make-interval (min (* (upper-bound x)
+                                (lower-bound y))
+                             (* (lower-bound x)
+                                (upper-bound y)))
+                        (max (* (lower-bound x)
+                                (lower-bound y))
+                             (* (upper-bound x)
+                                (upper-bound y)))))
+        ((and (<= (lower-bound x) 0)
+              (>= (upper-bound x) 0)
+              (>= (lower-bound y) 0))
+         (make-interval (* (lower-bound x)
+                           (upper-bound y))
+                        (* (upper-bound x)
+                           (upper-bound y))))
+        ((and (<= (lower-bound y) 0)
+              (>= (upper-bound y) 0)
+              (>= (lower-bound x) 0))
+         (make-interval (* (upper-bound x)
+                           (lower-bound y))
+                        (* (upper-bound x)
+                           (upper-bound y))))
+        ((and (>= (upper-bound x) 0)
+              (<= (lower-bound x) 0)
+              (<= (upper-bound y) 0))
+         (make-interval (* (upper-bound x)
+                           (lower-bound y))
+                        (* (lower-bound x)
+                           (lower-bound y))))
+        ((and (>= (upper-bound y) 0)
+              (<= (lower-bound y) 0)
+              (<= (upper-bound x) 0))
+         (make-interval (* (lower-bound x)
+                           (upper-bound y))
+                        (* (lower-bound x)
+                           (lower-bound y))))
+        ((and (<= (upper-bound x) 0)
+              (>= (lower-bound y) 0))
+         (make-interval (* (lower-bound x)
+                           (upper-bound y))
+                        (* (upper-bound x)
+                           (lower-bound y))))
+        ((and (>= (lower-bound x) 0)
+              (<= (upper-bound y) 0))
+         (make-interval (* (upper-bound x)
+                           (lower-bound y))
+                        (* (lower-bound x)
+                           (upper-bound y))))))
+```
+
+That was fun.
+
