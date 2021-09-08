@@ -379,3 +379,42 @@ Translating this into code:
 
 That was fun.
 
+## Exercise 2.12
+
+```scheme
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (make-center-percent c p)
+  (let ((w (* (/ p 100) c)))
+    (make-interval (- c w) (+ c w))))
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (width i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+
+(define (percent i)
+  (* 100 (/ (width i) (center i))))
+```
+
+## Exercise 2.13
+
+Let $x$ be the interval with centre $c_x$ and percentage tolerance $p_x$ and $y$ be the interval with centre $c_y$ and percentage tolerance $p_y$, where $0 \le p_x, p_y, \le 1$. Then $x = [c_x - c_xp_x, c_x + c_xp_x]$ and, similarly, $y = [c_y - c_yp_y, c_y + c_yp_y]$. Since we are assuming that all the numbers are positive, the resulting interval will be $z = [(c_x - c_xp_x)(c_y - c_yp_y), (c_x + c_xp_x)(c_y + c_yp_y)]$, which simplifies to $[c_xc_y - c_xc_yp_y - c_xc_yp_x + c_xc_yp_xp_y, c_xc_y + c_xc_yp_y + c_xc_yp_x + c_xc_yp_xp_y]$. This interval obviously has a centre of $c_xc_y$, so the width of the interval is $c_xc_y(p_x + p_y + p_xp_y -1)$, and hence the percentage tolerance is just $p_x + p_y + p_xp_y - 1$.
+
+## Exercise 2.14
+
+An example that demonstrates that Lem is right is taking $R_1 = [2, 5]$ and $R_2 = [4, 7]$, where `par1` returns an interval of $[0.6666666666666666, 5.833333333333333]$ whereas `par2` returns an interval of $[1.3333333333333333, 2.9166666666666665]$.
+
+The issue is that there is no way to tell which values are equal. Suppose there was a single defined value, $x = [c_x - c_xp_x, c_x + c_xp_x]$, then we should have $x/x = 1$, since, despite the uncertainty, the value itself is the same. This means that the answer should have no uncertainty, but since there is no way to tell whether one instance of $[c_x - c_xp_x, c_x + c_xp_x]$ is the same as another, uncertainty is introduced in the answer.
+
+This is relevant since, when multiplying the equation from `par2` by $R_1R_2$ to get the equation for `par1`, the fractions in the denominator need to be cancelled out, but because there is no way to know whether those variables are identical, this introduces uncertainty where there should be none, making the results from `par1` and `par2` different.
+
+## Exercise 2.15
+
+As stated above, each mention of a variable in an equation is treated as a separate variable with a separate uncertainty, meaning that if a variable is repeated in the equation, the bounds will be less tight. This means that `par2` is "better" in the sense that it should produce tighter error bounds, because there are no repeated variables in the equation.
+
+## Exercise 2.16
+
+The general issue is that there is no concept of identity in the implementation, and it would be hard/impossible to link up seemingly separate variables to always have the same, and yet an unknown, value. In order to get around this problem, one could use equations which only mention each variable once, but this is again not possible since not all equations can be written in this form.
