@@ -418,3 +418,80 @@ As stated above, each mention of a variable in an equation is treated as a separ
 ## Exercise 2.16
 
 The general issue is that there is no concept of identity in the implementation, and it would be hard/impossible to link up seemingly separate variables to always have the same, and yet an unknown, value. In order to get around this problem, one could use equations which only mention each variable once, but this is again not possible since not all equations can be written in this form.
+
+## Exercise 2.17
+
+```scheme
+(define (last-pair l)
+  (if (null? (cdr l))
+      l
+      (last-pair (cdr l))))
+```
+
+## Exercise 2.18
+
+```scheme
+(define (reverse l)
+  (define (reverse-iter current-rev current-l)
+    (if (null? current-l)
+        current-rev
+        (reverse-iter (cons (car current-l)
+                            current-rev)
+                      (cdr current-l))))
+  (reverse-iter (list) l))
+```
+
+## Exercise 2.19
+
+```scheme
+(define (cc amount coin-values)
+  (cond ((= amount 0) 1)
+        ((or (< amount 0) (no-more? coin-values)) 0)
+        (else
+         (+ (cc amount
+                (except-first-denomination
+                 coin-values))
+            (cc (- amount
+                   (first-denomination
+                    coin-values))
+            coin-values)))))
+
+(define (no-more? l) (null? l))
+(define (first-denomination l) (car l))
+(define (except-first-denomination l) (cdr l))
+```
+
+The order of the list `coin-values` should have no impact on the answer produced by `cc` because it doesn't matter whether you start building the change from the lowest denomination or the highest, as all combinations of coins are considered.
+
+## Exercise 2.20
+
+```scheme
+(define (same-parity x . rest)
+  (define (filter-parity l p)
+    (if (null? l)
+        l
+        (if (= (remainder (car l) 2) p)
+            (cons (car l) (filter-parity (cdr l) p))
+            (filter-parity (cdr l) p))))
+  (filter-parity (cons x rest) (remainder x 2)))
+```
+
+## Exercise 2.21
+
+```scheme
+(define (square x) (* x x))
+
+(define (square-list-1 items)
+  (if (null? items)
+      null
+      (cons (square (car items)) (square-list-1 (cdr items)))))
+
+(define (square-list-2 items)
+  (map square items))
+```
+
+## Exercise 2.22
+
+The first implementation produces the answer list in the reverse order since each next element in the list is paired with the previous answer using `cons`, putting the new element in the front, meaning that the last element must go at the front of the list and the first must go at the back.
+
+The second method achieves nothing but to reverse the meaning of `car` and `cdr` when accessing the result. Even though, when written out, the list is now in order, the first element is still the most nested, and now the items of the list are on the right-hand side of their pairs, which means that the result is not a list.
